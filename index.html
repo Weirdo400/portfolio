@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catherine Austin Fitts // Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        :root {
+            --bg: #F9F9E8;
+            --black: #000000;
+            --suede: #E8BA8E;
+            --white: #ffffff;
+            --radius-lg: 52px;
+            --radius-md: 24px;
+            --radius-sm: 100px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--black);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--black);
+            overflow-x: hidden;
+        }
+
+        .main-canvas {
+            background-color: var(--bg);
+            border-radius: var(--radius-lg);
+            margin: 12px;
+            min-height: calc(100vh - 24px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        h1, h2, h3 {
+            font-weight: 500;
+            letter-spacing: -0.05em;
+            line-height: 0.9;
+        }
+
+        .display-text {
+            font-size: 14vw;
+            color: rgba(0,0,0,0.04);
+            position: absolute;
+            top: 20vh;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+            white-space: nowrap;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px 60px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(249, 249, 232, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .pill-btn {
+            background: transparent;
+            border: 1px solid rgba(0,0,0,0.1);
+            padding: 12px 24px;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            color: var(--black);
+            font-size: 14px;
+            font-family: inherit;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .pill-btn.active, .pill-btn:hover {
+            background: var(--black);
+            color: var(--white);
+            border-color: var(--black);
+        }
+
+        /* ── Mobile nav ── */
+        .hamburger {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            background: rgba(0,0,0,0.06);
+            border: none;
+            border-radius: 50%;
+            padding: 0;
+            position: relative;
+            z-index: 110;
+            transition: background 0.2s;
+        }
+
+        .hamburger:hover { background: rgba(0,0,0,0.1); }
+
+        .hamburger svg path {
+            transition: transform 0.35s cubic-bezier(.5,.85,.25,1.1),
+                        rotate 0.35s cubic-bezier(.5,.85,.25,1.8),
+                        opacity 0.2s ease;
+            transform-origin: center;
+        }
+
+        .hamburger[aria-expanded="true"] .line-top {
+            transform: translateY(7px) rotate(135deg);
+        }
+
+        .hamburger[aria-expanded="true"] .line-mid {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+
+        .hamburger[aria-expanded="true"] .line-bot {
+            transform: translateY(-7px) rotate(45deg);
+        }
+
+        /* Mobile dropdown popover */
+        .mobile-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 240px;
+            background: rgba(249,249,232,0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(0,0,0,0.08);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+            padding: 8px;
+            z-index: 105;
+            opacity: 0;
+            transform: translateY(-8px) scale(0.97);
+            transform-origin: top right;
+            transition: opacity 0.22s ease, transform 0.22s ease;
+            pointer-events: none;
+        }
+
+        .mobile-menu.open {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        .mobile-menu a {
+            display: block;
+            padding: 13px 18px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--black);
+            text-decoration: none;
+            transition: background 0.15s;
+        }
+
+        .mobile-menu a:hover { background: rgba(0,0,0,0.05); }
+
+        .mobile-menu a.menu-cta {
+            background: var(--black);
+            color: var(--white);
+            text-align: center;
+            margin-top: 4px;
+            font-weight: 600;
+        }
+
+        .mobile-menu a.menu-cta:hover { opacity: 0.85; background: var(--black); }
+
+        .mobile-menu hr {
+            border: none;
+            border-top: 1px solid rgba(0,0,0,0.07);
+            margin: 4px 0;
+        }
+
+        /* Nav wrapper needs position relative for popover */
+        nav { position: sticky; }
+
+        .hero {
+            padding: 60px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            min-height: 85vh;
+            position: relative;
+        }
+
+        .hero-image-container {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            background: #eee;
+            position: relative;
+            min-height: 500px;
+        }
+
+        .hero-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-bottom: 40px;
+            z-index: 1;
+        }
+
+        .hero-tag {
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .hero-tag-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--black);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .hero-title {
+            font-size: 72px;
+            margin-bottom: 30px;
+        }
+
+        .hero-bio {
+            font-size: 18px;
+            line-height: 1.6;
+            max-width: 500px;
+            opacity: 0.8;
+            margin-bottom: 24px;
+        }
+
+        .hero-sub {
+            font-size: 16px;
+            line-height: 1.6;
+            max-width: 500px;
+            opacity: 0.6;
+            margin-bottom: 40px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .hero-actions .pill-btn {
+            padding: 16px 32px;
+        }
+
+        .section-header {
+            padding: 100px 60px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .section-title {
+            font-size: 48px;
+        }
+
+        .section-subtitle {
+            opacity: 0.5;
+            margin-top: 8px;
+            font-size: 15px;
+        }
+
+        /* ── Carousel ── */
+        .carousel-wrap {
+            padding: 20px 60px 60px;
+        }
+
+        .carousel-track {
+            display: grid;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .h-card {
+            grid-area: 1 / 1;
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            background: var(--white);
+            border-radius: var(--radius-md);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+            border: 1px solid rgba(0,0,0,0.05);
+            min-height: 400px;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .h-card.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .h-card-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg);
+            flex-shrink: 0;
+            padding: 40px 32px 40px 40px;
+        }
+
+        .h-card-image img {
+            width: 260px;
+            height: 260px;
+            object-fit: cover;
+            object-position: top center;
+            display: block;
+            border-radius: 50%;
+            transition: transform 6s ease;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+        }
+
+        .h-card.active .h-card-image img {
+            transform: scale(1.04);
+        }
+
+        .h-card-body {
+            padding: 48px 52px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .h-card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .h-card-date {
+            font-size: 13px;
+            font-weight: 600;
+            opacity: 0.45;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .h-card-num {
+            font-size: 13px;
+            font-weight: 600;
+            opacity: 0.2;
+        }
+
+        .h-card-title {
+            font-size: 36px;
+            font-weight: 500;
+            letter-spacing: -0.03em;
+            line-height: 1.05;
+        }
+
+        .h-card-desc {
+            font-size: 17px;
+            opacity: 0.65;
+            line-height: 1.7;
+        }
+
+        /* Dots + progress */
+        .carousel-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 0;
+        }
+
+        .carousel-dots {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            padding: 0;
+        }
+
+        .dot.active {
+            background: var(--black);
+            width: 28px;
+            border-radius: 100px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            max-width: 200px;
+            height: 2px;
+            background: rgba(0,0,0,0.08);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--black);
+            border-radius: 2px;
+            transition: width linear;
+        }
+
+        /* ── What I Stand For ── */
+        .pillars-section {
+            margin: 0 60px 80px;
+            background: var(--black);
+            border-radius: var(--radius-lg);
+            padding: 80px;
+            color: var(--white);
+        }
+
+        .pillars-heading {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.35);
+            margin-bottom: 64px;
+        }
+
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+        }
+
+        .pillar-card {
+            padding: 0 48px 0 0;
+            border-right: 1px solid rgba(255,255,255,0.1);
+            margin-right: 48px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .pillar-card:last-child {
+            border-right: none;
+            margin-right: 0;
+            padding-right: 0;
+        }
+
+        .pillar-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .pillar-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--suede);
+        }
+
+        .pillar-title {
+            font-size: 30px;
+            font-weight: 500;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            color: var(--white);
+        }
+
+        .pillar-desc {
+            font-size: 16px;
+            line-height: 1.75;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .footer-cta {
+            background: var(--suede);
+            margin: 0 40px 40px;
+            border-radius: var(--radius-lg);
+            padding: 100px 60px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cta-title {
+            font-size: clamp(40px, 6vw, 80px);
+            line-height: 1;
+        }
+
+        .cta-desc {
+            max-width: 600px;
+            margin-top: 20px;
+            font-size: 18px;
+            line-height: 1.5;
+            opacity: 0.8;
+        }
+
+        .cta-btn {
+            background: var(--black);
+            color: var(--white);
+            padding: 28px 80px;
+            border-radius: var(--radius-sm);
+            font-size: 20px;
+            font-family: inherit;
+            font-weight: 500;
+            text-decoration: none;
+            margin-top: 40px;
+            transition: transform 0.25s ease, opacity 0.25s ease;
+            display: inline-block;
+        }
+
+        .cta-btn:hover { transform: scale(1.02); opacity: 0.9; }
+
+        .performance-path {
+            fill: none;
+            stroke: var(--suede);
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--black); }
+        ::-webkit-scrollbar-thumb { background: var(--suede); border-radius: 10px; }
+
+        @media (max-width: 1024px) {
+            nav { padding: 24px 32px; }
+            .nav-links { display: none; gap: 8px; }
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%; left: 0; right: 0;
+                background: rgba(249,249,232,0.97);
+                backdrop-filter: blur(12px);
+                padding: 20px 32px 32px;
+                border-bottom-left-radius: 24px;
+                border-bottom-right-radius: 24px;
+            }
+            .hamburger { display: flex; }
+            .mobile-menu { display: none; }
+            .hero { grid-template-columns: 1fr; padding: 20px 20px 40px; gap: 24px; min-height: unset; }
+            .hero-image-container { min-height: unset; height: 56vw; max-height: 340px; border-radius: 28px; }
+            .hero-title { font-size: 36px; }
+            .hero-bio { font-size: 16px; margin-bottom: 16px; }
+            .hero-sub { display: none; }
+            .hero-actions .pill-btn { padding: 12px 24px; font-size: 13px; }
+            .section-header { padding: 48px 20px 20px; }
+            .section-title { font-size: 32px; }
+            .carousel-wrap { padding: 12px 20px 40px; }
+            .h-card { grid-template-columns: 1fr; min-height: auto; }
+            .h-card-image { padding: 32px 40px 0; justify-content: center; }
+            .h-card-image img { width: 160px; height: 160px; }
+            .h-card-body { padding: 24px 24px 32px; gap: 12px; }
+            .h-card-title { font-size: 22px; }
+            .h-card-desc { font-size: 15px; }
+            .pillars-section { margin: 0 20px 48px; padding: 48px 32px; }
+            .pillars-grid { grid-template-columns: 1fr; gap: 0; }
+            .pillar-card { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 0 0 36px 0; margin-right: 0; margin-bottom: 36px; }
+            .pillar-card:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+            .footer-cta { margin: 0 20px 20px; padding: 60px 32px; }
+            .cta-btn { padding: 24px 48px; font-size: 18px; }
+        }
+
+        @media (max-width: 600px) {
+            .main-canvas { margin: 8px; border-radius: 32px; overflow: hidden; }
+            .display-text { display: none; }
+            .hero { padding: 16px 16px 36px; gap: 20px; }
+            .hero-image-container { height: 62vw; max-height: 300px; border-radius: 20px; }
+            .hero-tag { font-size: 11px; }
+            .hero-title { font-size: 32px; margin-bottom: 16px; }
+            .hero-bio { font-size: 15px; max-width: 100%; margin-bottom: 12px; }
+            .hero-sub { display: none; }
+            .section-header { padding: 40px 16px 16px; }
+            .section-title { font-size: 28px; }
+            .carousel-wrap { padding: 8px 16px 36px; }
+            .h-card-image img { width: 140px; height: 140px; }
+            .h-card-body { padding: 20px 20px 28px; }
+            .h-card-title { font-size: 20px; }
+            .h-card-desc { font-size: 14px; }
+            .pillars-section { margin: 0 8px 36px; padding: 40px 24px; border-radius: 28px; }
+            .pillar-title { font-size: 22px; }
+            .pillar-desc { font-size: 14px; }
+            .footer-cta { margin: 0 8px 8px; padding: 48px 20px; border-radius: 28px; }
+            .cta-title { font-size: 32px; }
+            .cta-desc { font-size: 16px; }
+            .cta-btn { padding: 20px 36px; font-size: 16px; }
+        }
+
+        /* ── Loader ── */
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: var(--black);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 48px;
+            transition: opacity 0.7s ease, visibility 0.7s ease;
+        }
+
+        #loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .loader-name {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            overflow: hidden;
+        }
+
+        .loader-title {
+            font-size: clamp(36px, 6vw, 72px);
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            color: var(--bg);
+            line-height: 1;
+            clip-path: inset(0 0 100% 0);
+            animation: loader-rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+        }
+
+        .loader-sub {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--suede);
+            opacity: 0;
+            animation: loader-fade 0.6s ease 0.9s forwards;
+        }
+
+        @keyframes loader-rise {
+            to { clip-path: inset(0 0 0% 0); }
+        }
+
+        @keyframes loader-fade {
+            to { opacity: 1; }
+        }
+
+        /* Progress bar */
+        .loader-bar {
+            width: 160px;
+            height: 1px;
+            background: rgba(249,249,232,0.12);
+            border-radius: 1px;
+            overflow: hidden;
+            opacity: 0;
+            animation: loader-fade 0.4s ease 0.8s forwards;
+        }
+
+        .loader-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--suede);
+            border-radius: 1px;
+            animation: loader-progress 1.8s cubic-bezier(0.4, 0, 0.2, 1) 0.8s forwards;
+        }
+
+        @keyframes loader-progress {
+            0%   { width: 0%; }
+            60%  { width: 75%; }
+            100% { width: 100%; }
+        }
+
+        /* ── Grain texture ── */
+        .grain {
+            position: fixed;
+            inset: -50%;
+            width: 200%;
+            height: 200%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.038;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)'/%3E%3C/svg%3E");
+            animation: grain-shift 7s steps(8) infinite;
+        }
+
+        @keyframes grain-shift {
+            0%   { transform: translate(0,    0); }
+            12%  { transform: translate(-4%,  6%); }
+            25%  { transform: translate(8%,  -2%); }
+            37%  { transform: translate(-6%, -8%); }
+            50%  { transform: translate(4%,   4%); }
+            62%  { transform: translate(-8%,  2%); }
+            75%  { transform: translate(6%,  -6%); }
+            87%  { transform: translate(-2%,  8%); }
+            100% { transform: translate(0,    0); }
+        }
+
+        /* ── Hero parallax + hover ── */
+        .hero-image-container img {
+            transition: transform 0.6s ease;
+        }
+
+        .hero-image-container:hover img {
+            transform: scale(1.03);
+        }
+
+        /* ── Circular photo ring ── */
+        .h-card-image img {
+            box-shadow: 0 0 0 4px var(--suede), 0 8px 28px rgba(0,0,0,0.12);
+        }
+
+        /* ── Dot pulse ── */
+        @keyframes dot-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(0,0,0,0.3); }
+            50%       { box-shadow: 0 0 0 5px rgba(0,0,0,0); }
+        }
+
+        .dot.active {
+            animation: dot-pulse 2.4s ease infinite;
+        }
+
+        /* ── Page load ── */
+        .js-fade {
+            opacity: 0;
+            transform: translateY(18px);
+        }
+
+        /* ── WhatsApp button ── */
+        .wa-wrap {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            z-index: 300;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .wa-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--bg);
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 100px;
+            padding: 7px 14px 7px 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--black);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            animation: label-bob 3s ease-in-out 3s infinite;
+            white-space: nowrap;
+        }
+
+        .wa-label::before {
+            content: '';
+        }
+
+        .wa-label-arrow {
+            display: block;
+            width: 18px;
+            height: 18px;
+            margin-left: 2px;
+            opacity: 0.4;
+            animation: arrow-bounce 1.4s ease-in-out infinite;
+        }
+
+        @keyframes arrow-bounce {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(3px); }
+        }
+
+        @keyframes label-bob {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(-4px); }
+        }
+
+        .wa-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--black);
+            color: var(--suede);
+            border-radius: 100px;
+            padding: 16px 26px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: inherit;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2), 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .wa-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(0,0,0,0.25);
+            opacity: 0.9;
+        }
+
+        .wa-btn svg {
+            width: 22px;
+            height: 22px;
+            fill: var(--suede);
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 600px) {
+            .wa-wrap { bottom: 20px; right: 16px; }
+            .wa-btn { padding: 14px 20px; font-size: 14px; }
+            .wa-label { font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loader -->
+    <div id="loader" aria-hidden="true">
+        <div class="loader-name">
+            <div class="loader-title">C.A.F.</div>
+        </div>
+        <div class="loader-bar">
+            <div class="loader-bar-fill"></div>
+        </div>
+    </div>
+
+    <!-- Grain overlay -->
+    <div class="grain" aria-hidden="true"></div>
+
+    <!-- WhatsApp — replace YOUR_NUMBER with full number incl. country code e.g. 447911123456 -->
+    <div class="wa-wrap">
+        <div class="wa-label">
+            Contact me here
+            <svg class="wa-label-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 5v14M5 12l7 7 7-7"/>
+            </svg>
+        </div>
+        <a href="https://wa.me/YOUR_NUMBER" target="_blank" rel="noopener noreferrer" class="wa-btn" aria-label="Chat on WhatsApp">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+            Chat
+        </a>
+    </div>
+
+    <div class="main-canvas">
+        <div class="display-text" id="scroll-text">C.A.F // ACTIONABLE INTELLIGENCE // 2026</div>
+
+        <nav style="position: relative;">
+            <div class="logo">The Solari Report</div>
+            <div class="nav-links" id="nav-links">
+                <a href="#biography" class="pill-btn active">Biography</a>
+                <a href="#career" class="pill-btn">Career Overview</a>
+                <a href="#solari" class="pill-btn">The Solari Report</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path class="line-top" d="M4 7h16"/>
+                    <path class="line-mid" d="M4 12h16"/>
+                    <path class="line-bot" d="M4 17h16"/>
+                </svg>
+            </button>
+            <div class="mobile-menu" id="mobile-menu">
+                <a href="#biography">Biography</a>
+                <a href="#career">Career Overview</a>
+                <hr>
+                <a href="#solari" class="menu-cta">The Solari Report</a>
+            </div>
+        </nav>
+
+        <section class="hero" id="biography">
+            <div class="hero-image-container">
+                <img src="assets/media__1777069770320.jpg" alt="Catherine Austin Fitts">
+            </div>
+            <div class="hero-content">
+                <div class="hero-tag">
+                    <span class="hero-tag-dot"></span>
+                    Investment Banker • Public Servant • Commentator
+                </div>
+                <h1 class="hero-title">Catherine Austin Fitts</h1>
+                <p class="hero-bio">
+                    Former Assistant Secretary of Housing (HUD) and managing director at Dillon, Read &amp; Co. Dedicated to mapping out global financial systems and empowering individuals through ethical investment advice.
+                </p>
+                <p class="hero-sub">
+                    From modest beginnings in Philadelphia to pioneering transactions on Wall Street, focused on building wealth that supports real economies and local resilience.
+                </p>
+                <div class="hero-actions">
+                    <a href="#solari" class="pill-btn active">Discover Solari</a>
+                    <a href="#career" class="pill-btn">Explore Timeline</a>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-header" id="career">
+            <div>
+                <h2 class="section-title">Career &amp; Impact</h2>
+                <p class="section-subtitle">Highlighting major milestones in global finance and governance.</p>
+            </div>
+        </div>
+
+        <div class="carousel-wrap">
+            <div class="carousel-track" id="carousel">
+
+                <div class="h-card active">
+                    <div class="h-card-image">
+                        <img src="assets/media__1777069770304.jpg" alt="Wall Street Era" style="object-position: center;">
+                    </div>
+                    <div class="h-card-body">
+                        <div class="h-card-meta">
+                            <div class="h-card-date">1978 – 1989</div>
+                            <div class="h-card-num">01 / 03</div>
+                        </div>
+                        <div class="h-card-title">Dillon, Read &amp; Co.</div>
+                        <div class="h-card-desc">First female Managing Director in the firm's history. Pioneered municipal bond underwriting and managed billions in assets. Designed over $25B in transactions.</div>
+                    </div>
+                </div>
+
+                <div class="h-card">
+                    <div class="h-card-image">
+                        <img src="assets/hud_photo.jpg" alt="Catherine Austin Fitts speaking" style="object-position: center;">
+                    </div>
+                    <div class="h-card-body">
+                        <div class="h-card-meta">
+                            <div class="h-card-date">1989 – 1990</div>
+                            <div class="h-card-num">02 / 03</div>
+                        </div>
+                        <div class="h-card-title">Department of HUD</div>
+                        <div class="h-card-desc">Appointed by President George H.W. Bush as Assistant Secretary of Housing. Oversaw the Federal Housing Administration, managing immense mortgage portfolios and infrastructure strategies.</div>
+                    </div>
+                </div>
+
+                <div class="h-card">
+                    <div class="h-card-image">
+                        <img src="assets/solari_photo.jpg" alt="Catherine Austin Fitts" style="object-position: center top;">
+                    </div>
+                    <div class="h-card-body">
+                        <div class="h-card-meta">
+                            <div class="h-card-date">1998 – Present</div>
+                            <div class="h-card-num">03 / 03</div>
+                        </div>
+                        <div class="h-card-title">The Solari Report</div>
+                        <div class="h-card-desc">Founded Solari Inc. to provide actionable intelligence for a free life. Advising on ethical, community-oriented investing while shedding light on systematic transparency issues.</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="carousel-footer">
+                <div class="carousel-dots" id="carousel-dots">
+                    <button class="dot active" data-index="0" aria-label="Card 1"></button>
+                    <button class="dot" data-index="1" aria-label="Card 2"></button>
+                    <button class="dot" data-index="2" aria-label="Card 3"></button>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+        </div>
+
+        <section class="pillars-section">
+            <p class="pillars-heading">What I Stand For</p>
+            <div class="pillars-grid">
+
+                <div class="pillar-card">
+                    <span class="pillar-label">01 — Transparency</span>
+                    <h3 class="pillar-title">Financial Transparency</h3>
+                    <p class="pillar-desc">Governments and institutions must be held accountable for how public money is managed. Citizens deserve clear, honest answers about where their money goes and why.</p>
+                </div>
+
+                <div class="pillar-card">
+                    <span class="pillar-label">02 — Community</span>
+                    <h3 class="pillar-title">Community Wealth</h3>
+                    <p class="pillar-desc">Real wealth is built locally — through small businesses, local banks, and communities that reinvest in themselves. Money should serve the people who earn it, not extract from them.</p>
+                </div>
+
+                <div class="pillar-card">
+                    <span class="pillar-label">03 — Liberty</span>
+                    <h3 class="pillar-title">Individual Liberty</h3>
+                    <p class="pillar-desc">Every person has the right to understand, control, and grow their own finances. Financial education and honest intelligence are the foundation of a truly free society.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="footer-cta" id="solari">
+            <h2 class="cta-title">Ready to start building real wealth?</h2>
+            <p class="cta-desc">
+                Send a message and let's talk. Whether you have questions about financial freedom, ethical investing, or where to begin — I'm here.
+            </p>
+            <a href="https://wa.me/YOUR_NUMBER" target="_blank" rel="noopener noreferrer" class="cta-btn">Let's Talk</a>
+        </section>
+    </div>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // ── Loader ──
+        const loader = document.getElementById('loader');
+        const mainCanvas = document.querySelector('.main-canvas');
+        let dismissed = false;
+
+        // Keep main canvas invisible until loader exits
+        mainCanvas.style.opacity = '0';
+
+        function dismissLoader() {
+            if (dismissed) return;
+            dismissed = true;
+
+            loader.classList.add('hidden');
+
+            // Reveal canvas then run intro
+            setTimeout(() => {
+                mainCanvas.style.opacity = '1';
+                startIntro();
+            }, 750);
+        }
+
+        // Dismiss after bar animation (~2.6s)
+        setTimeout(dismissLoader, 2600);
+
+        function startIntro() {
+            const tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
+            tl.from('nav',                  { opacity: 0, y: -16, duration: 0.7 })
+              .from('.hero-image-container', { opacity: 0, scale: 0.97, duration: 0.9 }, '-=0.4')
+              .from('.hero-tag',             { opacity: 0, y: 16, duration: 0.6 }, '-=0.5')
+              .from('.hero-title',           { opacity: 0, y: 20, duration: 0.6 }, '-=0.45')
+              .from('.hero-bio',             { opacity: 0, y: 16, duration: 0.6 }, '-=0.4')
+              .from('.hero-sub',             { opacity: 0, y: 16, duration: 0.6 }, '-=0.4')
+              .from('.hero-actions',         { opacity: 0, y: 12, duration: 0.5 }, '-=0.35');
+        }
+
+        // ── Hero parallax ──
+        gsap.to('.hero-image-container img', {
+            yPercent: 10,
+            ease: 'none',
+            scrollTrigger: {
+                trigger: '.hero',
+                start: 'top top',
+                end: 'bottom top',
+                scrub: true
+            }
+        });
+
+        // ── Scroll reveals ──
+        gsap.utils.toArray('.section-header, .carousel-footer, .cta-title, .cta-desc, .cta-btn').forEach(el => {
+            gsap.from(el, {
+                opacity: 0, y: 24, duration: 0.8, ease: 'power2.out',
+                scrollTrigger: { trigger: el, start: 'top 88%' }
+            });
+        });
+
+        // ── Watermark scroll
+        gsap.fromTo("#scroll-text",
+            { x: 0 },
+            {
+                x: () => -(document.querySelector('#scroll-text').scrollWidth + 200),
+                ease: "none",
+                scrollTrigger: {
+                    trigger: ".main-canvas",
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: 1
+                }
+            }
+        );
+
+        // Auto-playing carousel
+        const cards   = document.querySelectorAll('.h-card');
+        const dots    = document.querySelectorAll('.dot');
+        const fill    = document.getElementById('progress-fill');
+        const DELAY   = 5000;
+        let current   = 0;
+        let timer     = null;
+        let fillAnim  = null;
+
+        function goTo(index) {
+            cards[current].classList.remove('active');
+            dots[current].classList.remove('active');
+            current = (index + cards.length) % cards.length;
+            cards[current].classList.add('active');
+            dots[current].classList.add('active');
+            startProgress();
+        }
+
+        function startProgress() {
+            if (fillAnim) fillAnim.kill();
+            fill.style.width = '0%';
+            fillAnim = gsap.to(fill, {
+                width: '100%',
+                duration: DELAY / 1000,
+                ease: 'none',
+                onComplete: () => goTo(current + 1)
+            });
+        }
+
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => goTo(Number(dot.dataset.index)));
+        });
+
+        startProgress();
+
+        // Pillar cards reveal
+        document.querySelectorAll('.pillar-card').forEach((card, i) => {
+            ScrollTrigger.create({
+                trigger: card,
+                start: 'top 88%',
+                onEnter: () => setTimeout(() => card.classList.add('visible'), i * 120)
+            });
+        });
+
+        // Mobile nav — animated hamburger + popover
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        hamburger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const open = mobileMenu.classList.toggle('open');
+            hamburger.setAttribute('aria-expanded', open);
+            mobileMenu.style.display = 'block';
+        });
+
+        mobileMenu.querySelectorAll('a').forEach(a => {
+            a.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+                hamburger.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+                mobileMenu.classList.remove('open');
+                hamburger.setAttribute('aria-expanded', 'false');
+            }
+        });
+    </script>
+</body>
+</html>
